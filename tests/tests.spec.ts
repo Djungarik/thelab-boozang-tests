@@ -93,14 +93,37 @@ test("sorted list", async ({ page }) => {
 
   const itemsList = page.locator(".collection");
   let item = itemsList.locator(".collection_item");
+  const dataArray = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
+  const addToDoButton = page.getByRole("button", { name: "Add todo" });
 
   await page.waitForSelector(".collection", { state: "visible" });
 
-  while ((await item.count()) > 0) {
-    const el = item.first();
-    const deleteButton = el.locator('button[title="delete"]');
-    await deleteButton.click();
+  if ((await itemsList.locator(".collection_item").count()) > 0) {
+    await itemsList
+      .locator(".collection_item")
+      .first()
+      .locator('button[title="delete"]')
+      .click();
   }
 
   await expect(itemsList.locator(".collection_item")).toHaveCount(0);
+
+  for (const el of dataArray) {
+    await page.locator(".list_form input").fill(el);
+    await addToDoButton.click();
+    await addToDoButton.waitFor({ state: "visible" });
+  }
+
+  await page.waitForSelector(".collection", { state: "visible" });
+
+  await expect(item).toHaveCount(dataArray.length);
+
+  await expect(itemsList).toHaveText(dataArray.join(" "));
+
+  await page.locator(".list_form input").fill("Test 6");
+  await addToDoButton.click();
+  await expect(itemsList).not.toHaveText("Test 6");
+  await expect(item).toHaveCount(dataArray.length);
+
+  await expect(page.getByText("Your schedule is full!")).toBeVisible();
 });
