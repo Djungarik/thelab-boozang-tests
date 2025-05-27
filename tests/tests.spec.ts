@@ -114,7 +114,7 @@ test("sorted list", async ({ page }) => {
     await addToDoButton.waitFor({ state: "visible" });
   }
 
-  await page.waitForSelector(".collection", { state: "visible" });
+  await itemsList.waitFor({ state: "visible" });
 
   await expect(item).toHaveCount(dataArray.length);
 
@@ -126,4 +126,99 @@ test("sorted list", async ({ page }) => {
   await expect(item).toHaveCount(dataArray.length);
 
   await expect(page.getByText("Your schedule is full!")).toBeVisible();
+});
+
+test("form fill", async ({ page }) => {
+  await page.getByRole("button", { name: "Menu" }).click();
+  await page.getByRole("link", { name: "Form Fill" }).click();
+
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const seconds = date.getSeconds().toString().padStart(2, "0");
+
+  const currentTime = `${hours}${minutes}${seconds}`;
+
+  const todaysDateAndTime = `${year}${month}${day}${currentTime}`;
+
+  const firstName = `Test First Name`;
+  const lastName = `Test Last Name${todaysDateAndTime}`;
+  const email = `test${todaysDateAndTime}@test.com`;
+  const password = `Test${todaysDateAndTime}!`;
+
+  await page.getByRole("textbox", { name: "First name:" }).fill(firstName);
+  await page.getByRole("textbox", { name: "Last name:" }).fill(lastName);
+  await page.getByRole("textbox", { name: "Email: " }).fill(email);
+  await page.getByRole("textbox", { name: "Password: " }).fill(password);
+
+  await Promise.all([
+    page.waitForResponse(
+      (res) =>
+        res.url().includes("/users/") &&
+        res.request().method() === "POST" &&
+        res.status() === 201
+    ),
+    page.getByRole("button", { name: "Save to db" }).click(),
+  ]);
+
+  await Promise.all([
+    page.waitForResponse(
+      (res) =>
+        res.url().includes("/users/") &&
+        res.request().method() === "GET" &&
+        res.status() === 200
+    ),
+    page.getByRole("button", { name: "Show users in db" }).click(),
+  ]);
+
+  await page.waitForSelector(".print_form.show", { state: "visible" });
+
+  await expect(page.locator("table tbody tr").first()).toContainText(
+    `${firstName} ${lastName}${email}`
+  );
+});
+test("form fill - add a user via API", async ({ page }) => {
+  await page.getByRole("button", { name: "Menu" }).click();
+  await page.getByRole("link", { name: "Form Fill" }).click();
+
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const seconds = date.getSeconds().toString().padStart(2, "0");
+
+  const currentTime = `${hours}${minutes}${seconds}`;
+
+  const todaysDateAndTime = `${year}${month}${day}${currentTime}`;
+
+  const firstName = `Test First Name`;
+  const lastName = `Test Last Name${todaysDateAndTime}`;
+  const email = `test${todaysDateAndTime}@test.com`;
+  const password = `Test${todaysDateAndTime}!`;
+
+  const articleResponse = await page.request.post(
+    "https://api.boozang.com/users/",
+    {
+      data: {
+        firstname: firstName,
+        lastname: lastName,
+        email: email,
+        password: password,
+      },
+    }
+  );
+
+  expect(articleResponse.ok()).toBeTruthy();
+
+  page.getByRole("button", { name: "Show users in db" }).click(),
+    await page.waitForSelector(".print_form.show", { state: "visible" });
+
+  await expect(page.locator("table tbody tr").first()).toContainText(
+    `${firstName} ${lastName}${email}`
+  );
 });
