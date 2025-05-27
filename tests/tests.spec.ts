@@ -215,8 +215,8 @@ test("form fill - add a user via API", async ({ page }) => {
 
   expect(articleResponse.ok()).toBeTruthy();
 
-  page.getByRole("button", { name: "Show users in db" }).click(),
-    await page.waitForSelector(".print_form.show", { state: "visible" });
+  await page.getByRole("button", { name: "Show users in db" }).click();
+  await page.waitForSelector(".print_form.show", { state: "visible" });
 
   await expect(page.locator("table tbody tr").first()).toContainText(
     `${firstName} ${lastName}${email}`
