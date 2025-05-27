@@ -222,3 +222,150 @@ test("form fill - add a user via API", async ({ page }) => {
     `${firstName} ${lastName}${email}`
   );
 });
+
+test.describe("cat shelter", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.getByRole("button", { name: "Menu" }).click();
+    await page.getByRole("link", { name: "Cat Shelter" }).click();
+  });
+  test("add a cat to the shelter", async ({ page }) => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
+
+    const currentTime = `${hours}${minutes}${seconds}`;
+
+    const todaysDateAndTime = `${year}${month}${day}${currentTime}`;
+
+    const catName = `Automation Cat ${todaysDateAndTime}`;
+    const catDescription = `Test Description 123!`;
+
+    await page.locator('[class="link_btn add"]').click();
+
+    await page.getByRole("textbox", { name: "Name:" }).fill(catName);
+    await page
+      .getByRole("textbox", { name: "Description:" })
+      .fill(catDescription);
+
+    await page.getByRole("radio", { name: "Wants to go outside" }).click();
+
+    await page.getByRole("button", { name: "Add Cat" }).click();
+
+    await expect(page.locator(".collection li").last()).toHaveText(catName);
+  });
+  test("edit a cat", async ({ page }) => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
+
+    const currentTime = `${hours}${minutes}${seconds}`;
+
+    const todaysDateAndTime = `${year}${month}${day}${currentTime}`;
+
+    const catName = `Automation Cat ${todaysDateAndTime}`;
+    const catDescription = `Test Description 123!`;
+
+    await page.locator('[class="link_btn add"]').click();
+
+    await page.getByRole("textbox", { name: "Name:" }).fill(catName);
+    await page
+      .getByRole("textbox", { name: "Description:" })
+      .fill(catDescription);
+
+    await page.getByRole("radio", { name: "Wants to go outside" }).click();
+
+    await page.getByRole("button", { name: "Add Cat" }).click();
+
+    await expect(page.locator(".collection li").last()).toHaveText(catName);
+
+    await page.locator(".collection li").last().click();
+
+    const editedCatName = `Edited ${catName}`;
+    const editedCatDescription = `Edited ${catDescription}`;
+
+    await page.getByPlaceholder("Enter name...").clear();
+    await page.getByPlaceholder("Enter name...").fill(editedCatName);
+    await page.getByPlaceholder("Enter description...").clear();
+    await page
+      .getByPlaceholder("Enter description...")
+      .fill(editedCatDescription);
+
+    const radios = [
+      page.getByRole("radio", { name: "Wants to go outside" }),
+      page.getByRole("radio", { name: "Stay inside" }),
+    ];
+
+    for (const radio of radios) {
+      if (!(await radio.isChecked())) {
+        await radio.click();
+        break;
+      }
+    }
+    const checkedRadio = page.getByRole("radio", { checked: true });
+    const checkedLabel = page.locator('label:has(input[type="radio"]:checked)');
+    const checkedRadioText = await checkedLabel.locator("span").textContent();
+
+    await page.getByRole("button", { name: "Save" }).click();
+
+    await expect(page.locator(".collection li").last()).toHaveText(
+      editedCatName
+    );
+
+    await page.locator(".collection li").last().click();
+
+    await expect(page.getByPlaceholder("Enter name...")).toHaveValue(
+      editedCatName
+    );
+    await expect(page.getByPlaceholder("Enter description...")).toHaveValue(
+      editedCatDescription
+    );
+
+    await expect(checkedRadio).toBeChecked();
+    await expect(checkedLabel.locator("span")).toHaveText(
+      checkedRadioText ?? ""
+    );
+  });
+  test("delete a cat", async ({ page }) => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
+
+    const currentTime = `${hours}${minutes}${seconds}`;
+
+    const todaysDateAndTime = `${year}${month}${day}${currentTime}`;
+
+    const catName = `Automation Cat ${todaysDateAndTime}`;
+    const catDescription = `Test Description 123!`;
+
+    await page.locator('[class="link_btn add"]').click();
+
+    await page.getByRole("textbox", { name: "Name:" }).fill(catName);
+    await page
+      .getByRole("textbox", { name: "Description:" })
+      .fill(catDescription);
+
+    await page.getByRole("radio", { name: "Wants to go outside" }).click();
+
+    await page.getByRole("button", { name: "Add Cat" }).click();
+
+    await expect(page.locator(".collection li").last()).toHaveText(catName);
+
+    await page.locator(".collection li").last().click();
+
+    await page.getByRole("button", { name: "Delete" }).click();
+
+    await expect(page.locator(".collection li").last()).not.toHaveText(catName);
+  });
+});
