@@ -369,3 +369,44 @@ test.describe("cat shelter", () => {
     await expect(page.locator(".collection li").last()).not.toHaveText(catName);
   });
 });
+
+test.describe("tables", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.getByRole("button", { name: "Menu" }).click();
+    await page.getByRole("link", { name: "Tables" }).click();
+  });
+
+  test("empty filters", async ({ page }) => {
+    const filters = page.locator(".option");
+
+    for (const filter of await filters.all()) {
+      if (
+        (await filter.locator("span").getAttribute("aria-checked")) === "true"
+      ) {
+        await filter.click();
+      }
+    }
+
+    await expect(page.locator("tbody")).toBeEmpty();
+  });
+
+  test("apply species filters", async ({ page }) => {
+    const filters = page.locator(".option");
+    const speciesCells = page.locator("tbody tr td:nth-child(3)");
+
+    for (const filter of await filters.all()) {
+      if (
+        (await filter.locator("span").getAttribute("aria-checked")) !== "true"
+      ) {
+        await filter.click();
+      }
+
+      const filterText = (await filter.textContent())?.slice(0, -1) ?? "";
+
+      const filteredSpecies = speciesCells.filter({ hasText: filterText });
+      const cellsCount = await filteredSpecies.count();
+
+      expect(cellsCount).toBeGreaterThan(0);
+    }
+  });
+});
