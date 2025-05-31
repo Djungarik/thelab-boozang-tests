@@ -436,3 +436,42 @@ test.describe("concat strings", () => {
     await expect(page.locator(".success_message.fail")).toBeVisible();
   });
 });
+
+test.describe("collecting kittens", () => {
+  test.setTimeout(40_000);
+  test.beforeEach(async ({ page }) => {
+    await page.getByRole("button", { name: "Menu" }).click();
+    await page.getByRole("link", { name: "Collecting kittens" }).click();
+    await page.getByRole("button", { name: "Start Game" }).click();
+  });
+  test("win the game - click only on kittens", async ({ page }) => {
+    const kittens = page.locator(".kitten");
+    let timeLeft = await page
+      .locator(".game_header_counter.time strong")
+      .textContent();
+
+    while (timeLeft !== "30") {
+      timeLeft = await page
+        .locator(".game_header_counter.time strong")
+        .textContent();
+
+      for (const kitten of await kittens.all()) {
+        await kitten.click();
+      }
+    }
+
+    const points = await page
+      .locator(".game_header_counter.points strong")
+      .textContent();
+
+    await expect(page.locator(".message")).toHaveText(
+      `Game Over!You got ${points} Points!`
+    );
+  });
+  test("loose the game - click on the hedgehog", async ({ page }) => {
+    await page.locator(".kitten").first().click();
+    await page.locator(".hedgehog").first().click();
+
+    await expect(page.locator(".message")).toHaveText(`Game Over!`);
+  });
+});
