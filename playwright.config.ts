@@ -1,17 +1,18 @@
+import { EyesFixture } from "@applitools/eyes-playwright/fixture";
 import { defineConfig, devices } from "@playwright/test";
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export default defineConfig<EyesFixture>({
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -25,6 +26,23 @@ export default defineConfig({
   reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    /* Configuration for Eyes VisualAI */
+    eyesConfig: {
+      /* The following and other configuration parameters are documented at: https://applitools.com/tutorials/playwright/api/overview */
+      apiKey: process.env.APPLITOOLS_API_KEY,
+      // serverUrl: 'https://eyes.applitools.com',
+
+      // failTestsOnDiff: false,
+      // appName: 'My App',
+      // matchLevel: 'Strict',
+      // batch: { name: 'My Batch' },
+      // proxy: {url: 'http://127.0.0.1:8888'},
+      // stitchMode: 'CSS',
+      // matchTimeout: 0,
+      // waitBeforeScreenshots: 50,
+      // saveNewTests: true,
+    },
+
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: "https://thelab.boozang.com",
 

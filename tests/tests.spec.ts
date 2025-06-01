@@ -1,4 +1,5 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "@applitools/eyes-playwright/fixture";
+import { findBall } from "./findBall";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -473,5 +474,43 @@ test.describe("collecting kittens", () => {
     await page.locator(".hedgehog").first().click();
 
     await expect(page.locator(".message")).toHaveText(`Game Over!`);
+  });
+});
+
+test("canvas game", async ({ page, eyes }) => {
+  await page.getByRole("button", { name: "Menu" }).click();
+  await page.getByRole("link", { name: "Canvas Game" }).click();
+
+  const canvas = page.locator("canvas");
+  const canvasBox = await canvas.boundingBox();
+
+  if (!canvasBox) {
+    throw new Error("Canvas bounding box not found");
+  }
+
+  await canvas.screenshot({ path: "canvas.png" });
+
+  const ballPos = await findBall("canvas.png", { r: 242, g: 77, b: 127 });
+
+  if (!ballPos) throw new Error("Ball not found");
+
+  const targetX = 444;
+  const targetY = 618;
+
+  const startX = canvasBox.x + ballPos.x;
+  const startY = canvasBox.y + ballPos.y;
+
+  // Drag the ball
+  await page.mouse.move(startX, startY);
+  await page.mouse.down();
+  await page.mouse.move(targetX, targetY, {
+    steps: 20,
+  });
+  await page.mouse.up();
+
+  await canvas.screenshot({ path: "canvas_after.png" });
+  await eyes.check("The ball is in the box", {
+    fully: true,
+    matchLevel: "Dynamic",
   });
 });
