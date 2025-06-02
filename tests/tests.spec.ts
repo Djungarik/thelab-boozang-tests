@@ -1,4 +1,5 @@
 import { test, expect } from "@applitools/eyes-playwright/fixture";
+import { PageManager } from "../page-objects/pageManager";
 import { findBall } from "./findBall";
 
 test.beforeEach(async ({ page }) => {
@@ -6,8 +7,9 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("speed game", async ({ page }) => {
-  await page.getByRole("button", { name: "Menu" }).click();
-  await page.getByRole("link", { name: "Speed Game" }).click();
+  const pm = new PageManager(page);
+
+  await pm.navigateTo().speedGamePage();
 
   await page.getByRole("button", { name: "Start Game" }).click();
 
@@ -17,8 +19,9 @@ test("speed game", async ({ page }) => {
 });
 
 test("wait game", async ({ page }) => {
-  await page.getByRole("button", { name: "Menu" }).click();
-  await page.getByRole("link", { name: "Wait Game" }).click();
+  const pm = new PageManager(page);
+
+  await pm.navigateTo().waitGamePage();
 
   await page.getByRole("button", { name: "Start Game" }).click();
 
@@ -35,8 +38,9 @@ test("wait game", async ({ page }) => {
 });
 
 test("yellow or blue", async ({ page }) => {
-  await page.getByRole("button", { name: "Menu" }).click();
-  await page.getByRole("link", { name: "Yellow or Blue" }).click();
+  const pm = new PageManager(page);
+
+  await pm.navigateTo().yellowOrBluePage();
 
   await page.getByRole("button", { name: "Generate Color" }).click();
 
@@ -62,8 +66,9 @@ test("yellow or blue", async ({ page }) => {
 });
 
 test("cat or dog", async ({ page }) => {
-  await page.getByRole("button", { name: "Menu" }).click();
-  await page.getByRole("link", { name: "Cat or dog" }).click();
+  const pm = new PageManager(page);
+
+  await pm.navigateTo().catOrDogPage();
 
   await page.getByRole("button", { name: "Generate Image" }).click();
 
@@ -89,8 +94,9 @@ test("cat or dog", async ({ page }) => {
 });
 
 test("sorted list", async ({ page }) => {
-  await page.getByRole("button", { name: "Menu" }).click();
-  await page.getByRole("link", { name: "Sorted list" }).click();
+  const pm = new PageManager(page);
+
+  await pm.navigateTo().sortedListPage();
 
   const itemsList = page.locator(".collection");
   let item = itemsList.locator(".collection_item");
@@ -130,8 +136,9 @@ test("sorted list", async ({ page }) => {
 });
 
 test("form fill", async ({ page }) => {
-  await page.getByRole("button", { name: "Menu" }).click();
-  await page.getByRole("link", { name: "Form Fill" }).click();
+  const pm = new PageManager(page);
+
+  await pm.navigateTo().formFillPage();
 
   const date = new Date();
   const year = date.getFullYear();
@@ -182,8 +189,9 @@ test("form fill", async ({ page }) => {
   );
 });
 test("form fill - add a user via API", async ({ page }) => {
-  await page.getByRole("button", { name: "Menu" }).click();
-  await page.getByRole("link", { name: "Form Fill" }).click();
+  const pm = new PageManager(page);
+
+  await pm.navigateTo().formFillPage();
 
   const date = new Date();
   const year = date.getFullYear();
@@ -225,9 +233,10 @@ test("form fill - add a user via API", async ({ page }) => {
 });
 
 test.describe("cat shelter", () => {
+  let pm: PageManager;
   test.beforeEach(async ({ page }) => {
-    await page.getByRole("button", { name: "Menu" }).click();
-    await page.getByRole("link", { name: "Cat Shelter" }).click();
+    pm = new PageManager(page);
+    await pm.navigateTo().catShelterPage();
   });
   test("add a cat to the shelter", async ({ page }) => {
     const date = new Date();
@@ -372,9 +381,10 @@ test.describe("cat shelter", () => {
 });
 
 test.describe("tables", () => {
+  let pm: PageManager;
   test.beforeEach(async ({ page }) => {
-    await page.getByRole("button", { name: "Menu" }).click();
-    await page.getByRole("link", { name: "Tables" }).click();
+    pm = new PageManager(page);
+    await pm.navigateTo().tablesPage();
   });
 
   test("empty filters", async ({ page }) => {
@@ -413,9 +423,10 @@ test.describe("tables", () => {
 });
 
 test.describe("concat strings", () => {
+  let pm: PageManager;
   test.beforeEach(async ({ page }) => {
-    await page.getByRole("button", { name: "Menu" }).click();
-    await page.getByRole("link", { name: "Concat strings" }).click();
+    pm = new PageManager(page);
+    await pm.navigateTo().concatStringsPage();
     await page.getByRole("button", { name: "Generate strings" }).click();
   });
   test("correct string", async ({ page }) => {
@@ -440,9 +451,10 @@ test.describe("concat strings", () => {
 
 test.describe("collecting kittens", () => {
   test.setTimeout(40_000);
+  let pm: PageManager;
   test.beforeEach(async ({ page }) => {
-    await page.getByRole("button", { name: "Menu" }).click();
-    await page.getByRole("link", { name: "Collecting kittens" }).click();
+    pm = new PageManager(page);
+    await pm.navigateTo().collectingKittensPage();
     await page.getByRole("button", { name: "Start Game" }).click();
   });
   test("win the game - click only on kittens", async ({ page }) => {
@@ -478,8 +490,9 @@ test.describe("collecting kittens", () => {
 });
 
 test("canvas game", async ({ page, eyes }) => {
-  await page.getByRole("button", { name: "Menu" }).click();
-  await page.getByRole("link", { name: "Canvas Game" }).click();
+  const pm = new PageManager(page);
+
+  await pm.navigateTo().canvasGamePage();
 
   const canvas = page.locator("canvas");
   const canvasBox = await canvas.boundingBox();
