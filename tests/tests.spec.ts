@@ -11,9 +11,8 @@ test("speed game", async ({ page }) => {
 
   await pm.navigateTo().speedGamePage();
 
-  await page.getByRole("button", { name: "Start Game" }).click();
-
-  await page.getByRole("button", { name: "End Game" }).click();
+  await pm.onSpeedGamePage().startGame();
+  await pm.onSpeedGamePage().endGame();
 
   await expect(page.getByText("Success")).toBeVisible();
 });
