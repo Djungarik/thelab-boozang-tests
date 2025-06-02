@@ -69,24 +69,25 @@ test("cat or dog", async ({ page }) => {
 
   await pm.navigateTo().catOrDogPage();
 
-  await page.getByRole("button", { name: "Generate Image" }).click();
+  await pm.onCatOrDogPage().generateImage();
 
   const imageSuccess = page.locator(".image img");
 
   if ((await imageSuccess.getAttribute("alt")) === "cat") {
-    await page.getByRole("button", { name: "cat" }).click();
+    await pm.onCatOrDogPage().clickCat();
   } else {
-    await page.getByRole("button", { name: "dog" }).click();
+    await pm.onCatOrDogPage().clickDog();
   }
 
   await expect(page.locator(".success_message")).toBeVisible();
 
-  await page.getByRole("button", { name: "Generate Image" }).click();
+  await pm.onCatOrDogPage().generateImage();
   const imageFail = page.locator(".image img");
+
   if ((await imageFail.getAttribute("alt")) === "cat") {
-    await page.getByRole("button", { name: "dog" }).click();
+    await pm.onCatOrDogPage().clickDog();
   } else {
-    await page.getByRole("button", { name: "cat" }).click();
+    await pm.onCatOrDogPage().clickCat();
   }
 
   await expect(page.locator(".success_message.fail")).toBeVisible();
