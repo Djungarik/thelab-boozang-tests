@@ -2,18 +2,21 @@ import { Page } from "@playwright/test";
 import { NavigationPage } from "./navigationPage";
 import { SpeedGamePage } from "./speedGamePage";
 import { WaitGamePage } from "./waitGamePage";
+import { YellowOrBluePage } from "./yellowOrBluePage";
 
 export class PageManager {
   readonly page: Page;
   readonly navigationPage: NavigationPage;
   readonly speedGamePage: SpeedGamePage;
   readonly waitGamePage: WaitGamePage;
+  readonly yellowOrBluePage: YellowOrBluePage;
 
   constructor(page: Page) {
     this.page = page;
     this.navigationPage = new NavigationPage(this.page);
     this.speedGamePage = new SpeedGamePage(this.page);
     this.waitGamePage = new WaitGamePage(this.page);
+    this.yellowOrBluePage = new YellowOrBluePage(this.page);
   }
 
   navigateTo() {
@@ -26,5 +29,9 @@ export class PageManager {
 
   onWaitGamePage() {
     return this.waitGamePage;
+  }
+
+  onYellowOrBluePage() {
+    return this.yellowOrBluePage;
   }
 }

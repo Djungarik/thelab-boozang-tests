@@ -41,24 +41,24 @@ test("yellow or blue", async ({ page }) => {
 
   await pm.navigateTo().yellowOrBluePage();
 
-  await page.getByRole("button", { name: "Generate Color" }).click();
+  await pm.onYellowOrBluePage().generateColor();
 
   const colorSuccess = page.locator(".color");
 
   if ((await colorSuccess.textContent()) === "yellow") {
-    await page.getByRole("button", { name: "yellow" }).click();
+    await pm.onYellowOrBluePage().clickYellow();
   } else {
-    await page.getByRole("button", { name: "blue" }).click();
+    await pm.onYellowOrBluePage().clickBlue();
   }
   await expect(page.locator(".success_message")).toBeVisible();
 
-  await page.getByRole("button", { name: "Generate Color" }).click();
+  await pm.onYellowOrBluePage().generateColor();
   const colorFail = page.locator(".color");
 
   if ((await colorFail.textContent()) === "yellow") {
-    await page.getByRole("button", { name: "blue" }).click();
+    await pm.onYellowOrBluePage().clickBlue();
   } else {
-    await page.getByRole("button", { name: "yellow" }).click();
+    await pm.onYellowOrBluePage().clickYellow();
   }
 
   await expect(page.locator(".success_message.fail")).toBeVisible();
