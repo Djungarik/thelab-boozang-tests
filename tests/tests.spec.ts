@@ -22,17 +22,17 @@ test("wait game", async ({ page }) => {
 
   await pm.navigateTo().waitGamePage();
 
-  await page.getByRole("button", { name: "Start Game" }).click();
-
-  await page.getByRole("button", { name: "End Game" }).click();
+  await pm.onWaitGamePage().startGame();
+  await pm.onWaitGamePage().endGame();
 
   await expect(page.getByText("Try again!")).toBeVisible();
 
-  await page.getByRole("button", { name: "Start Game" }).click();
+  await pm.onWaitGamePage().startGame();
 
   await page.waitForTimeout(5001);
 
-  await page.getByRole("button", { name: "End Game" }).click();
+  await pm.onWaitGamePage().endGame();
+
   await expect(page.locator(".success_message")).toBeVisible();
 });
 
