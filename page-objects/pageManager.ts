@@ -10,6 +10,7 @@ import { CatShelterPage } from "./catShelterPage";
 import { TablesPage } from "./tablesPage";
 import { ConcatStringsPage } from "./concatStringsPage";
 import { CollectingKittensPage } from "./collectingKittensPage";
+import { CanvasGamePage } from "./canvasGamePage";
 
 export class PageManager {
   readonly page: Page;
@@ -24,6 +25,7 @@ export class PageManager {
   readonly tablesPage: TablesPage;
   readonly concatStringsPage: ConcatStringsPage;
   readonly collectingKittensPage: CollectingKittensPage;
+  readonly canvasGamePage: CanvasGamePage;
 
   constructor(page: Page) {
     this.page = page;
@@ -38,6 +40,7 @@ export class PageManager {
     this.tablesPage = new TablesPage(this.page);
     this.concatStringsPage = new ConcatStringsPage(this.page);
     this.collectingKittensPage = new CollectingKittensPage(this.page);
+    this.canvasGamePage = new CanvasGamePage(this.page);
   }
 
   navigateTo() {
@@ -82,5 +85,9 @@ export class PageManager {
 
   onCollectingKittensPage() {
     return this.collectingKittensPage;
+  }
+
+  onCanvasGamePage() {
+    return this.canvasGamePage;
   }
 }

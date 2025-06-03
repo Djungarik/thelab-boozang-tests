@@ -1,7 +1,5 @@
-//import { test, expect } from "@applitools/eyes-playwright/fixture";
 import { test, expect } from "../fixtures";
 import { PageManager } from "../page-objects/pageManager";
-import { findBall } from "./findBall";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -369,7 +367,7 @@ test.describe("collecting kittens", () => {
   });
 });
 
-test("canvas game", async ({ page, eyes }) => {
+test.only("canvas game", async ({ page, eyes }) => {
   const pm = new PageManager(page);
 
   await pm.navigateTo().canvasGamePage();
@@ -383,7 +381,9 @@ test("canvas game", async ({ page, eyes }) => {
 
   await canvas.screenshot({ path: "canvas.png" });
 
-  const ballPos = await findBall("canvas.png", { r: 242, g: 77, b: 127 });
+  const ballPos = await pm
+    .onCanvasGamePage()
+    .getBallCoordinates("canvas.png", { r: 242, g: 77, b: 127 });
 
   if (!ballPos) throw new Error("Ball not found");
 
@@ -393,13 +393,9 @@ test("canvas game", async ({ page, eyes }) => {
   const startX = canvasBox.x + ballPos.x;
   const startY = canvasBox.y + ballPos.y;
 
-  // Drag the ball
-  await page.mouse.move(startX, startY);
-  await page.mouse.down();
-  await page.mouse.move(targetX, targetY, {
-    steps: 20,
-  });
-  await page.mouse.up();
+  await pm
+    .onCanvasGamePage()
+    .moveBallToSpecificCoordinates(startX, startY, targetX, targetY);
 
   await canvas.screenshot({ path: "canvas_after.png" });
   await eyes.check("The ball is in the box", {
