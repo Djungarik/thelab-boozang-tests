@@ -1,4 +1,5 @@
-import { test, expect } from "@applitools/eyes-playwright/fixture";
+//import { test, expect } from "@applitools/eyes-playwright/fixture";
+import { test, expect } from "../fixtures";
 import { PageManager } from "../page-objects/pageManager";
 import { findBall } from "./findBall";
 
@@ -133,47 +134,24 @@ test("form fill", async ({ page }) => {
 
   await pm.navigateTo().formFillPage();
 
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-  const seconds = date.getSeconds().toString().padStart(2, "0");
-
-  const currentTime = `${hours}${minutes}${seconds}`;
-
-  const todaysDateAndTime = `${year}${month}${day}${currentTime}`;
+  const todaysDateAndTime = pm.onFormFillPage().getTodaysDateAndTime();
 
   const firstName = `Test First Name`;
   const lastName = `Test Last Name${todaysDateAndTime}`;
   const email = `test${todaysDateAndTime}@test.com`;
   const password = `Test${todaysDateAndTime}!`;
 
-  await page.getByRole("textbox", { name: "First name:" }).fill(firstName);
-  await page.getByRole("textbox", { name: "Last name:" }).fill(lastName);
-  await page.getByRole("textbox", { name: "Email: " }).fill(email);
-  await page.getByRole("textbox", { name: "Password: " }).fill(password);
+  await pm
+    .onFormFillPage()
+    .fillFormWithFirstNameLastNameEmailPassword(
+      firstName,
+      lastName,
+      email,
+      password
+    );
 
-  await Promise.all([
-    page.waitForResponse(
-      (res) =>
-        res.url().includes("/users/") &&
-        res.request().method() === "POST" &&
-        res.status() === 201
-    ),
-    page.getByRole("button", { name: "Save to db" }).click(),
-  ]);
-
-  await Promise.all([
-    page.waitForResponse(
-      (res) =>
-        res.url().includes("/users/") &&
-        res.request().method() === "GET" &&
-        res.status() === 200
-    ),
-    page.getByRole("button", { name: "Show users in db" }).click(),
-  ]);
+  await pm.onFormFillPage().clickSaveToDBButtonAndWaitForResponse();
+  await pm.onFormFillPage().clickShowUsersInDBButtonAndWaitForResponse();
 
   await page.waitForSelector(".print_form.show", { state: "visible" });
 
@@ -181,38 +159,23 @@ test("form fill", async ({ page }) => {
     `${firstName} ${lastName}${email}`
   );
 });
-test("form fill - add a user via API", async ({ page }) => {
+test("form fill - add a user via API", async ({ page, apiHelper }) => {
   const pm = new PageManager(page);
 
   await pm.navigateTo().formFillPage();
 
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-  const seconds = date.getSeconds().toString().padStart(2, "0");
-
-  const currentTime = `${hours}${minutes}${seconds}`;
-
-  const todaysDateAndTime = `${year}${month}${day}${currentTime}`;
+  const todaysDateAndTime = pm.onFormFillPage().getTodaysDateAndTime();
 
   const firstName = `Test First Name`;
   const lastName = `Test Last Name${todaysDateAndTime}`;
   const email = `test${todaysDateAndTime}@test.com`;
   const password = `Test${todaysDateAndTime}!`;
 
-  const articleResponse = await page.request.post(
-    "https://api.boozang.com/users/",
-    {
-      data: {
-        firstname: firstName,
-        lastname: lastName,
-        email: email,
-        password: password,
-      },
-    }
+  const articleResponse = await apiHelper.createFormFillITem(
+    firstName,
+    lastName,
+    email,
+    password
   );
 
   expect(articleResponse.ok()).toBeTruthy();
