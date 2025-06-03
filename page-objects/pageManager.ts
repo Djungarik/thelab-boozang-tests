@@ -5,6 +5,7 @@ import { WaitGamePage } from "./waitGamePage";
 import { YellowOrBluePage } from "./yellowOrBluePage";
 import { CatOrDogPage } from "./catOrDogPage";
 import { SortedListPage } from "./sortedListPage";
+import { FormFillPage } from "./formFillPage";
 
 export class PageManager {
   readonly page: Page;
@@ -14,6 +15,7 @@ export class PageManager {
   readonly yellowOrBluePage: YellowOrBluePage;
   readonly catOrDogPage: CatOrDogPage;
   readonly sortedListPage: SortedListPage;
+  readonly formFillPage: FormFillPage;
 
   constructor(page: Page) {
     this.page = page;
@@ -23,6 +25,7 @@ export class PageManager {
     this.yellowOrBluePage = new YellowOrBluePage(this.page);
     this.catOrDogPage = new CatOrDogPage(this.page);
     this.sortedListPage = new SortedListPage(this.page);
+    this.formFillPage = new FormFillPage(this.page);
   }
 
   navigateTo() {
@@ -47,5 +50,9 @@ export class PageManager {
 
   onSortedListPage() {
     return this.sortedListPage;
+  }
+
+  onFormFillPage() {
+    return this.formFillPage;
   }
 }
