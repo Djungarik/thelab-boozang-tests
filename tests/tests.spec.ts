@@ -353,24 +353,9 @@ test.describe("collecting kittens", () => {
     await page.getByRole("button", { name: "Start Game" }).click();
   });
   test("win the game - click only on kittens", async ({ page }) => {
-    const kittens = page.locator(".kitten");
-    let timeLeft = await page
-      .locator(".game_header_counter.time strong")
-      .textContent();
+    await pm.onCollectingKittensPage().clickOnAllKittens();
 
-    while (timeLeft !== "30") {
-      timeLeft = await page
-        .locator(".game_header_counter.time strong")
-        .textContent();
-
-      for (const kitten of await kittens.all()) {
-        await kitten.click();
-      }
-    }
-
-    const points = await page
-      .locator(".game_header_counter.points strong")
-      .textContent();
+    const points = await pm.onCollectingKittensPage().getPoints();
 
     await expect(page.locator(".message")).toHaveText(
       `Game Over!You got ${points} Points!`

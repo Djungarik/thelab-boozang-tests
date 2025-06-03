@@ -9,6 +9,7 @@ import { FormFillPage } from "./formFillPage";
 import { CatShelterPage } from "./catShelterPage";
 import { TablesPage } from "./tablesPage";
 import { ConcatStringsPage } from "./concatStringsPage";
+import { CollectingKittensPage } from "./collectingKittensPage";
 
 export class PageManager {
   readonly page: Page;
@@ -22,6 +23,7 @@ export class PageManager {
   readonly catShelterPage: CatShelterPage;
   readonly tablesPage: TablesPage;
   readonly concatStringsPage: ConcatStringsPage;
+  readonly collectingKittensPage: CollectingKittensPage;
 
   constructor(page: Page) {
     this.page = page;
@@ -35,6 +37,7 @@ export class PageManager {
     this.catShelterPage = new CatShelterPage(this.page);
     this.tablesPage = new TablesPage(this.page);
     this.concatStringsPage = new ConcatStringsPage(this.page);
+    this.collectingKittensPage = new CollectingKittensPage(this.page);
   }
 
   navigateTo() {
@@ -75,5 +78,9 @@ export class PageManager {
 
   onConcatStringsPage() {
     return this.concatStringsPage;
+  }
+
+  onCollectingKittensPage() {
+    return this.collectingKittensPage;
   }
 }
