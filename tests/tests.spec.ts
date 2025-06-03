@@ -105,19 +105,12 @@ test("sorted list", async ({ page }) => {
 
   await page.waitForSelector(".collection", { state: "visible" });
 
-  if ((await itemsList.locator(".collection_item").count()) > 0) {
-    await itemsList
-      .locator(".collection_item")
-      .first()
-      .locator('button[title="delete"]')
-      .click();
-  }
+  await pm.onSortedListPage().deleteAllItemsFromTheList(itemsList);
 
   await expect(itemsList.locator(".collection_item")).toHaveCount(0);
 
   for (const el of dataArray) {
-    await page.locator(".list_form input").fill(el);
-    await addToDoButton.click();
+    await pm.onSortedListPage().addItemToTheList(el);
     await addToDoButton.waitFor({ state: "visible" });
   }
 
@@ -127,8 +120,8 @@ test("sorted list", async ({ page }) => {
 
   await expect(itemsList).toHaveText(dataArray.join(" "));
 
-  await page.locator(".list_form input").fill("Test 6");
-  await addToDoButton.click();
+  await pm.onSortedListPage().addItemToTheList("Test 6");
+
   await expect(itemsList).not.toHaveText("Test 6");
   await expect(item).toHaveCount(dataArray.length);
 

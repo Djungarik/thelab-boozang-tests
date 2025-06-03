@@ -4,6 +4,7 @@ import { SpeedGamePage } from "./speedGamePage";
 import { WaitGamePage } from "./waitGamePage";
 import { YellowOrBluePage } from "./yellowOrBluePage";
 import { CatOrDogPage } from "./catOrDogPage";
+import { SortedListPage } from "./sortedListPage";
 
 export class PageManager {
   readonly page: Page;
@@ -12,6 +13,7 @@ export class PageManager {
   readonly waitGamePage: WaitGamePage;
   readonly yellowOrBluePage: YellowOrBluePage;
   readonly catOrDogPage: CatOrDogPage;
+  readonly sortedListPage: SortedListPage;
 
   constructor(page: Page) {
     this.page = page;
@@ -20,6 +22,7 @@ export class PageManager {
     this.waitGamePage = new WaitGamePage(this.page);
     this.yellowOrBluePage = new YellowOrBluePage(this.page);
     this.catOrDogPage = new CatOrDogPage(this.page);
+    this.sortedListPage = new SortedListPage(this.page);
   }
 
   navigateTo() {
@@ -40,5 +43,9 @@ export class PageManager {
 
   onCatOrDogPage() {
     return this.catOrDogPage;
+  }
+
+  onSortedListPage() {
+    return this.sortedListPage;
   }
 }
