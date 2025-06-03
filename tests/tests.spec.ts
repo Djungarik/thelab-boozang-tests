@@ -299,16 +299,7 @@ test.describe("tables", () => {
   });
 
   test("empty filters", async ({ page }) => {
-    const filters = page.locator(".option");
-
-    for (const filter of await filters.all()) {
-      if (
-        (await filter.locator("span").getAttribute("aria-checked")) === "true"
-      ) {
-        await filter.click();
-      }
-    }
-
+    await pm.onTablesPage().uncheckAllFilters();
     await expect(page.locator("tbody")).toBeEmpty();
   });
 
@@ -316,15 +307,10 @@ test.describe("tables", () => {
     const filters = page.locator(".option");
     const speciesCells = page.locator("tbody tr td:nth-child(3)");
 
+    await pm.onTablesPage().checkAllFilters();
+
     for (const filter of await filters.all()) {
-      if (
-        (await filter.locator("span").getAttribute("aria-checked")) !== "true"
-      ) {
-        await filter.click();
-      }
-
       const filterText = (await filter.textContent())?.slice(0, -1) ?? "";
-
       const filteredSpecies = speciesCells.filter({ hasText: filterText });
       const cellsCount = await filteredSpecies.count();
 

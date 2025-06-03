@@ -7,6 +7,7 @@ import { CatOrDogPage } from "./catOrDogPage";
 import { SortedListPage } from "./sortedListPage";
 import { FormFillPage } from "./formFillPage";
 import { CatShelterPage } from "./catShelterPage";
+import { TablesPage } from "./tablesPage";
 
 export class PageManager {
   readonly page: Page;
@@ -18,6 +19,7 @@ export class PageManager {
   readonly sortedListPage: SortedListPage;
   readonly formFillPage: FormFillPage;
   readonly catShelterPage: CatShelterPage;
+  readonly tablesPage: TablesPage;
 
   constructor(page: Page) {
     this.page = page;
@@ -29,6 +31,7 @@ export class PageManager {
     this.sortedListPage = new SortedListPage(this.page);
     this.formFillPage = new FormFillPage(this.page);
     this.catShelterPage = new CatShelterPage(this.page);
+    this.tablesPage = new TablesPage(this.page);
   }
 
   navigateTo() {
@@ -61,5 +64,9 @@ export class PageManager {
 
   onCatShelterPage() {
     return this.catShelterPage;
+  }
+
+  onTablesPage() {
+    return this.tablesPage;
   }
 }
