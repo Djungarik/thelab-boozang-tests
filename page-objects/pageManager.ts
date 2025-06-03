@@ -6,6 +6,7 @@ import { YellowOrBluePage } from "./yellowOrBluePage";
 import { CatOrDogPage } from "./catOrDogPage";
 import { SortedListPage } from "./sortedListPage";
 import { FormFillPage } from "./formFillPage";
+import { CatShelterPage } from "./catShelterPage";
 
 export class PageManager {
   readonly page: Page;
@@ -16,6 +17,7 @@ export class PageManager {
   readonly catOrDogPage: CatOrDogPage;
   readonly sortedListPage: SortedListPage;
   readonly formFillPage: FormFillPage;
+  readonly catShelterPage: CatShelterPage;
 
   constructor(page: Page) {
     this.page = page;
@@ -26,6 +28,7 @@ export class PageManager {
     this.catOrDogPage = new CatOrDogPage(this.page);
     this.sortedListPage = new SortedListPage(this.page);
     this.formFillPage = new FormFillPage(this.page);
+    this.catShelterPage = new CatShelterPage(this.page);
   }
 
   navigateTo() {
@@ -54,5 +57,9 @@ export class PageManager {
 
   onFormFillPage() {
     return this.formFillPage;
+  }
+
+  onCatShelterPage() {
+    return this.catShelterPage;
   }
 }
