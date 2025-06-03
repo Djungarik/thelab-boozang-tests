@@ -329,18 +329,16 @@ test.describe("concat strings", () => {
   test("correct string", async ({ page }) => {
     const string1 = await page.locator(".string1").textContent();
     const string2 = await page.locator(".string2").textContent();
-    const expectedResult = `${string1}${string2}`;
+    const expectedString = `${string1}${string2}`;
 
-    await page.locator(".list_form input").fill(expectedResult);
-
-    await page.getByRole("button", { name: "Submit string" }).click();
+    await pm.onConcatStringsPage().fillFormWithTwoStrings(expectedString);
+    await pm.onConcatStringsPage().clickSubmitStringButton();
 
     await expect(page.locator(".success_message")).toBeVisible();
   });
   test("wrong string", async ({ page }) => {
-    await page.locator(".list_form input").fill("Wrong string");
-
-    await page.getByRole("button", { name: "Submit string" }).click();
+    await pm.onConcatStringsPage().fillFormWithTwoStrings("Wrong String");
+    await pm.onConcatStringsPage().clickSubmitStringButton();
 
     await expect(page.locator(".success_message.fail")).toBeVisible();
   });
