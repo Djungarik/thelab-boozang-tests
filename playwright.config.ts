@@ -27,6 +27,10 @@ export default defineConfig<EyesFixture>({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Configuration for Eyes VisualAI */
+    screenshot: "on-first-failure",
+    launchOptions: {
+      args: ["--use-gl=egl", "--enable-webgl", "--ignore-gpu-blocklist"],
+    },
     eyesConfig: {
       /* The following and other configuration parameters are documented at: https://applitools.com/tutorials/playwright/api/overview */
       apiKey: process.env.APPLITOOLS_API_KEY,

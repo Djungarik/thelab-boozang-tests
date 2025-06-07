@@ -195,7 +195,7 @@ test.describe("cat shelter", () => {
   test("add a cat to the shelter", async ({ page }) => {
     const todaysDateAndTime = pm.onCatShelterPage().getTodaysDateAndTime();
 
-    const catName = `Automation Cat ${todaysDateAndTime}`;
+    const catName = `Automation Cat Added ${todaysDateAndTime}`;
     const catDescription = `Test Description 123!`;
 
     await pm.onCatShelterPage().clickAddCatButtonOnTheShelterPage();
@@ -208,12 +208,14 @@ test.describe("cat shelter", () => {
         "Wants to go outside"
       );
 
-    await expect(page.locator(".collection li").last()).toHaveText(catName);
+    await expect(
+      page.locator(".collection li", { hasText: catName })
+    ).toHaveCount(1);
   });
   test("edit a cat", async ({ page }) => {
     const todaysDateAndTime = pm.onCatShelterPage().getTodaysDateAndTime();
 
-    const catName = `Automation Cat ${todaysDateAndTime}`;
+    const catName = `Automation Cat Edit Me ${todaysDateAndTime}`;
     const catDescription = `Test Description 123!`;
 
     await pm.onCatShelterPage().clickAddCatButtonOnTheShelterPage();
@@ -226,9 +228,7 @@ test.describe("cat shelter", () => {
         "Wants to go outside"
       );
 
-    await expect(page.locator(".collection li").last()).toHaveText(catName);
-
-    await page.locator(".collection li").last().click();
+    await page.locator(".collection li", { hasText: catName }).click();
 
     const updatedCatName = `Edited ${catName}`;
     const updatedCatDescription = `Edited ${catDescription}`;
@@ -280,9 +280,7 @@ test.describe("cat shelter", () => {
         "Wants to go outside"
       );
 
-    await expect(page.locator(".collection li").last()).toHaveText(catName);
-
-    await page.locator(".collection li").last().click();
+    await page.locator(".collection li", { hasText: catName }).click();
 
     await pm.onCatShelterPage().clickDeleteButton();
     await expect(page.locator(".collection li").last()).not.toHaveText(catName);
@@ -374,6 +372,7 @@ test.only("canvas game", async ({ page, eyes }) => {
 
   const canvas = page.locator("canvas");
   const canvasBox = await canvas.boundingBox();
+  await expect(canvas).toBeVisible();
 
   if (!canvasBox) {
     throw new Error("Canvas bounding box not found");

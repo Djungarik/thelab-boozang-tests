@@ -11,6 +11,7 @@ export class SortedListPage {
     while ((await list.locator(".collection_item").count()) > 0) {
       const item = list.locator(".collection_item").first();
       await item.locator('button[title="delete"]').click();
+      await this.page.waitForTimeout(1000);
     }
   }
 
