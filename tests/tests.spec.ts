@@ -246,11 +246,11 @@ test.describe("cat shelter", () => {
 
     await pm.onCatShelterPage().clickSaveButton();
 
-    await expect(page.locator(".collection li").last()).toHaveText(
-      updatedCatName
-    );
+    await expect(
+      page.locator(".collection li", { hasText: updatedCatName })
+    ).toHaveCount(1);
 
-    await page.locator(".collection li").last().click();
+    await page.locator(".collection li", { hasText: updatedCatName }).click();
 
     await expect(page.getByPlaceholder("Enter name...")).toHaveValue(
       updatedCatName
@@ -365,14 +365,15 @@ test.describe("collecting kittens", () => {
   });
 });
 
-test.only("canvas game", async ({ page, eyes }) => {
-  const pm = new PageManager(page);
+test("canvas game", async ({ page, eyes }) => {
+  const pm = new PageManager(page, eyes);
 
   await pm.navigateTo().canvasGamePage();
 
   const canvas = page.locator("canvas");
   const canvasBox = await canvas.boundingBox();
   await expect(canvas).toBeVisible();
+  await page.waitForTimeout(500);
 
   if (!canvasBox) {
     throw new Error("Canvas bounding box not found");
@@ -397,8 +398,6 @@ test.only("canvas game", async ({ page, eyes }) => {
     .moveBallToSpecificCoordinates(startX, startY, targetX, targetY);
 
   await canvas.screenshot({ path: "canvas_after.png" });
-  await eyes.check("The ball is in the box", {
-    fully: true,
-    matchLevel: "Dynamic",
-  });
+
+  await pm.onCanvasGamePage().verifyCanvasPage();
 });

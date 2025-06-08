@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { Eyes } from "@applitools/eyes-playwright";
 import { NavigationPage } from "./navigationPage";
 import { SpeedGamePage } from "./speedGamePage";
 import { WaitGamePage } from "./waitGamePage";
@@ -14,6 +15,7 @@ import { CanvasGamePage } from "./canvasGamePage";
 
 export class PageManager {
   readonly page: Page;
+  private eyes?: Eyes;
   readonly navigationPage: NavigationPage;
   readonly speedGamePage: SpeedGamePage;
   readonly waitGamePage: WaitGamePage;
@@ -25,10 +27,11 @@ export class PageManager {
   readonly tablesPage: TablesPage;
   readonly concatStringsPage: ConcatStringsPage;
   readonly collectingKittensPage: CollectingKittensPage;
-  readonly canvasGamePage: CanvasGamePage;
+  private _canvasGamePage?: CanvasGamePage;
 
-  constructor(page: Page) {
+  constructor(page: Page, eyes?: any) {
     this.page = page;
+    this.eyes = eyes;
     this.navigationPage = new NavigationPage(this.page);
     this.speedGamePage = new SpeedGamePage(this.page);
     this.waitGamePage = new WaitGamePage(this.page);
@@ -40,7 +43,6 @@ export class PageManager {
     this.tablesPage = new TablesPage(this.page);
     this.concatStringsPage = new ConcatStringsPage(this.page);
     this.collectingKittensPage = new CollectingKittensPage(this.page);
-    this.canvasGamePage = new CanvasGamePage(this.page);
   }
 
   navigateTo() {
@@ -87,7 +89,15 @@ export class PageManager {
     return this.collectingKittensPage;
   }
 
-  onCanvasGamePage() {
-    return this.canvasGamePage;
+  onCanvasGamePage(): CanvasGamePage {
+    if (!this.eyes) {
+      throw new Error("Eyes instance is required for CanvasGamePage");
+    }
+
+    if (!this._canvasGamePage) {
+      this._canvasGamePage = new CanvasGamePage(this.page, this.eyes);
+    }
+
+    return this._canvasGamePage;
   }
 }
