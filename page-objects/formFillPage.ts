@@ -1,9 +1,10 @@
 import { Page } from "@playwright/test";
-import { HelperBase } from "./helperBase";
 
-export class FormFillPage extends HelperBase {
+export class FormFillPage {
+  readonly page: Page;
+
   constructor(page: Page) {
-    super(page);
+    this.page = page;
   }
 
   async fillFormWithFirstNameLastNameEmailPassword(
@@ -42,9 +43,5 @@ export class FormFillPage extends HelperBase {
       ),
       this.page.getByRole("button", { name: "Show users in db" }).click(),
     ]);
-  }
-
-  getTodaysDateAndTime() {
-    return this.todaysDateWithCurrentTime();
   }
 }

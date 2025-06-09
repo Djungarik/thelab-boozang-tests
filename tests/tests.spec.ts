@@ -127,13 +127,12 @@ test("sorted list", async ({ page }) => {
   await expect(page.getByText("Your schedule is full!")).toBeVisible();
 });
 
-test("form fill", async ({ page }) => {
+test("form fill", async ({ page, helperBase }) => {
   const pm = new PageManager(page);
 
   await pm.navigateTo().formFillPage();
 
-  const todaysDateAndTime = pm.onFormFillPage().getTodaysDateAndTime();
-
+  const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
   const firstName = `Test First Name`;
   const lastName = `Test Last Name${todaysDateAndTime}`;
   const email = `test${todaysDateAndTime}@test.com`;
@@ -157,13 +156,16 @@ test("form fill", async ({ page }) => {
     `${firstName} ${lastName}${email}`
   );
 });
-test("form fill - add a user via API", async ({ page, apiHelper }) => {
+test("form fill - add a user via API", async ({
+  page,
+  apiHelper,
+  helperBase,
+}) => {
   const pm = new PageManager(page);
 
   await pm.navigateTo().formFillPage();
 
-  const todaysDateAndTime = pm.onFormFillPage().getTodaysDateAndTime();
-
+  const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
   const firstName = `Test First Name`;
   const lastName = `Test Last Name${todaysDateAndTime}`;
   const email = `test${todaysDateAndTime}@test.com`;
@@ -192,9 +194,8 @@ test.describe("cat shelter", () => {
     pm = new PageManager(page);
     await pm.navigateTo().catShelterPage();
   });
-  test("add a cat to the shelter", async ({ page }) => {
-    const todaysDateAndTime = pm.onCatShelterPage().getTodaysDateAndTime();
-
+  test("add a cat to the shelter", async ({ page, helperBase }) => {
+    const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
     const catName = `Automation Cat Added ${todaysDateAndTime}`;
     const catDescription = `Test Description 123!`;
 
@@ -212,9 +213,8 @@ test.describe("cat shelter", () => {
       page.locator(".collection li", { hasText: catName })
     ).toHaveCount(1);
   });
-  test("edit a cat", async ({ page }) => {
-    const todaysDateAndTime = pm.onCatShelterPage().getTodaysDateAndTime();
-
+  test("edit a cat", async ({ page, helperBase }) => {
+    const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
     const catName = `Automation Cat Edit Me ${todaysDateAndTime}`;
     const catDescription = `Test Description 123!`;
 
@@ -264,8 +264,8 @@ test.describe("cat shelter", () => {
       checkedRadioText ?? ""
     );
   });
-  test("delete a cat", async ({ page }) => {
-    const todaysDateAndTime = pm.onCatShelterPage().getTodaysDateAndTime();
+  test("delete a cat", async ({ page, helperBase }) => {
+    const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
 
     const catName = `DELETE Automation Cat ${todaysDateAndTime}`;
     const catDescription = `Test Description 123!`;

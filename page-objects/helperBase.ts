@@ -7,7 +7,7 @@ export class HelperBase {
     this.page = page;
   }
 
-  todaysDateWithCurrentTime() {
+  getTodaysDateWithCurrentTime() {
     const date = new Date();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();

@@ -1,13 +1,10 @@
 import { Page } from "@playwright/test";
-import { HelperBase } from "./helperBase";
 
-export class CatShelterPage extends HelperBase {
+export class CatShelterPage {
+  readonly page: Page;
+
   constructor(page: Page) {
-    super(page);
-  }
-
-  getTodaysDateAndTime() {
-    return this.todaysDateWithCurrentTime();
+    this.page = page;
   }
 
   async addCatWithNameDescriptionRadioValue(
