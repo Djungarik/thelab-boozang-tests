@@ -3,7 +3,7 @@ import { APIRequestContext } from "@playwright/test";
 export class ApiHelper {
   constructor(private request: APIRequestContext) {}
 
-  async createFormFillITem(
+  async createFormFillItem(
     firstName: string,
     lastName: string,
     email: string,
@@ -17,5 +17,8 @@ export class ApiHelper {
         password: password,
       },
     });
+  }
+  async deleteFormFillItem(userId: string) {
+    return await this.request.delete(`https://api.boozang.com/users/${userId}`);
   }
 }

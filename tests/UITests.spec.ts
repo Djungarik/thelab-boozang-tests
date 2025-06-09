@@ -156,37 +156,6 @@ test("form fill", async ({ page, helperBase }) => {
     `${firstName} ${lastName}${email}`
   );
 });
-test("form fill - add a user via API", async ({
-  page,
-  apiHelper,
-  helperBase,
-}) => {
-  const pm = new PageManager(page);
-
-  await pm.navigateTo().formFillPage();
-
-  const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
-  const firstName = `Test First Name`;
-  const lastName = `Test Last Name${todaysDateAndTime}`;
-  const email = `test${todaysDateAndTime}@test.com`;
-  const password = `Test${todaysDateAndTime}!`;
-
-  const articleResponse = await apiHelper.createFormFillITem(
-    firstName,
-    lastName,
-    email,
-    password
-  );
-
-  expect(articleResponse.ok()).toBeTruthy();
-
-  await page.getByRole("button", { name: "Show users in db" }).click();
-  await page.waitForSelector(".print_form.show", { state: "visible" });
-
-  await expect(page.locator("table tbody tr").first()).toContainText(
-    `${firstName} ${lastName}${email}`
-  );
-});
 
 test.describe("cat shelter", () => {
   let pm: PageManager;

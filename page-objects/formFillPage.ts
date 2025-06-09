@@ -44,4 +44,8 @@ export class FormFillPage {
       this.page.getByRole("button", { name: "Show users in db" }).click(),
     ]);
   }
+
+  async clickHideUsersInDBButton() {
+    await this.page.getByRole("button", { name: "Hide  users in db" }).click();
+  }
 }
