@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "chromium-all-ui-tests": "npx playwright test tests.spec.ts --project=chromium -- --args='--enable-webgl'"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
