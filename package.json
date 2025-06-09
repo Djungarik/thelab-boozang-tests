@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "chromium-all-ui-tests": "npx playwright test tests.spec.ts --project=chromium -- --args='--enable-webgl'"
+    "chromium-all-ui-tests": "npx playwright test UITests.spec.ts --project=chromium -- --args='--enable-webgl'",
+    "chromium-all-api-tests": "npx playwright test APITests.spec.ts --project=chromium"
   },
   "author": "",
   "license": "ISC",
