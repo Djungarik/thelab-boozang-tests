@@ -1,8 +1,11 @@
 import { APIRequestContext } from "@playwright/test";
 
 export class ApiHelper {
-  constructor(private request: APIRequestContext) {}
+  constructor(private request: APIRequestContext) {
+    this.request = request;
+  }
 
+  // FORM FILL
   async createFormFillItem(
     firstName: string,
     lastName: string,
@@ -20,5 +23,42 @@ export class ApiHelper {
   }
   async deleteFormFillItem(userId: string) {
     return await this.request.delete(`https://api.boozang.com/users/${userId}`);
+  }
+
+  //CAT SHELTER
+  async createCat(
+    description: string,
+    foundHome: boolean,
+    inOrOutside: string,
+    name: string
+  ) {
+    return await this.request.post("https://api.boozang.com/cats/", {
+      data: {
+        description: description,
+        foundHome: foundHome,
+        inOrOutside: inOrOutside,
+        name: name,
+      },
+    });
+  }
+  async deleteCat(catId: string) {
+    return await this.request.delete(`https://api.boozang.com/cats/${catId}`);
+  }
+  async updateCat(
+    description: string,
+    foundHome: boolean,
+    catId: string,
+    inOrOutside: string,
+    name: string
+  ) {
+    return await this.request.put(`https://api.boozang.com/cats/${catId}`, {
+      data: {
+        description: description,
+        foundHome: foundHome,
+        id: catId,
+        inOrOutside: inOrOutside,
+        name: name,
+      },
+    });
   }
 }
