@@ -17,7 +17,7 @@ test.describe("form fill API", () => {
     helperBase,
   }) => {
     const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
-    const firstName = `Test First Name`;
+    const firstName = `API Test First Name`;
     const lastName = `Test Last Name${todaysDateAndTime}`;
     const email = `test${todaysDateAndTime}@test.com`;
     const password = `Test${todaysDateAndTime}!`;
@@ -105,7 +105,7 @@ test.describe("cat shelter API", () => {
     const catDescription = `Test Description 123!`;
     const isFoundHome = false;
     const inOrOutside = "outside";
-    const catName = `Automation Cat Added ${todaysDateAndTime}`;
+    const catName = `API Automation Cat Added ${todaysDateAndTime}`;
 
     const createCatResponse = await apiHelper.createCat(
       catDescription,
@@ -170,7 +170,7 @@ test.describe("cat shelter API", () => {
     const catDescription = `Test Description 123!`;
     const isFoundHome = false;
     const inOrOutside = "outside";
-    const catName = `Automation Cat ${todaysDateAndTime}`;
+    const catName = `API Automation Cat ${todaysDateAndTime}`;
 
     const createCatResponse = await apiHelper.createCat(
       catDescription,
@@ -193,7 +193,7 @@ test.describe("cat shelter API", () => {
     const catDescriptionUpdate = `Test Updated Description 123!`;
     const isFoundHomeUpdate = true;
     const inOrOutsideUpdate = "inside";
-    const catNameUpdate = `Automation Cat Updated ${todaysDateAndTime}`;
+    const catNameUpdate = `API Automation Cat Updated ${todaysDateAndTime}`;
 
     const updateCatResponse = await apiHelper.updateCat(
       catDescriptionUpdate,
