@@ -215,3 +215,60 @@ test.describe("cat shelter API", () => {
     ).toHaveCount(1);
   });
 });
+
+test.describe("sorted list  API", () => {
+  let pm: PageManager;
+  test.beforeEach(async ({ page }) => {
+    pm = new PageManager(page);
+    await pm.navigateTo().sortedListPage();
+  });
+
+  test("sorted list - add an item via API", async ({
+    page,
+    apiHelper,
+    helperBase,
+  }) => {
+    const todaysDate = helperBase.getTodaysDateWithCurrentTime();
+    const itemTitle = `API ${todaysDate}`;
+    const addItemResponse = await apiHelper.createSortedListItem(itemTitle);
+
+    expect(addItemResponse.ok()).toBeTruthy();
+
+    await page.reload();
+
+    await expect(
+      page.locator(".collection_item", { hasText: itemTitle })
+    ).toHaveCount(1);
+  });
+
+  test("sorted list - delete an item via API", async ({
+    page,
+    apiHelper,
+    helperBase,
+  }) => {
+    const todaysDate = helperBase.getTodaysDateWithCurrentTime();
+    const itemTitle = `API DELETE ME ${todaysDate}`;
+    const addItemResponse = await apiHelper.createSortedListItem(itemTitle);
+
+    expect(addItemResponse.ok()).toBeTruthy();
+
+    await page.reload();
+
+    await expect(
+      page.locator(".collection_item", { hasText: itemTitle })
+    ).toHaveCount(1);
+
+    const addItemData = await addItemResponse.json();
+    const itemId = addItemData.id;
+
+    const deleteItemResponse = await apiHelper.deleteSortedListItem(itemId);
+
+    expect(deleteItemResponse.ok()).toBeTruthy();
+
+    await page.reload();
+
+    await expect(
+      page.locator(".collection_item", { hasText: itemTitle })
+    ).toHaveCount(0);
+  });
+});

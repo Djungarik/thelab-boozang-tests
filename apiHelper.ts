@@ -61,4 +61,16 @@ export class ApiHelper {
       },
     });
   }
+
+  //SORTED LIST
+  async createSortedListItem(title: string) {
+    return await this.request.post("https://api.boozang.com/todos/", {
+      data: {
+        title: title,
+      },
+    });
+  }
+  async deleteSortedListItem(itemId: string) {
+    return await this.request.delete(`https://api.boozang.com/todos/${itemId}`);
+  }
 }
