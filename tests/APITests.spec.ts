@@ -120,7 +120,7 @@ test.describe("cat shelter API", () => {
 
     await expect(
       page.locator(".collection li", { hasText: catName })
-    ).toHaveCount(0);
+    ).toHaveCount(1);
   });
   test("cat shelter - delete a cat via API", async ({
     page,
