@@ -1,3 +1,5 @@
 {
-  "fiveItemsList": ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
+  "fiveItemsList": ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
+  "apiItem": "API Item",
+  "apiItemDelete": "API DELETE ME"
 }

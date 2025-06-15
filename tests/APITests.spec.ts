@@ -1,5 +1,8 @@
 import { test, expect } from "../fixtures";
 import { PageManager } from "../page-objects/pageManager";
+import * as sortedListTestData from "../test-data/sortedList.json";
+import * as formFillTestData from "../test-data/formFill.json";
+import * as catShelterTestData from "../test-data/catShelter.json";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -17,10 +20,12 @@ test.describe("form fill API", () => {
     helperBase,
   }) => {
     const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
-    const firstName = `API Test First Name`;
-    const lastName = `Test Last Name${todaysDateAndTime}`;
-    const email = `test${todaysDateAndTime}@test.com`;
-    const password = `Test${todaysDateAndTime}!`;
+    const firstName = formFillTestData.apiTestUser.firstName;
+    const lastName = `${formFillTestData.apiTestUser.lastName}${todaysDateAndTime}`;
+    const baseEmail = formFillTestData.apiTestUser.email;
+    const [prefix, domain] = baseEmail.split("@");
+    const email = `${prefix}+${todaysDateAndTime}@${domain}`;
+    const password = `${formFillTestData.apiTestUser.password}${todaysDateAndTime}!`;
 
     const articleResponse = await apiHelper.createFormFillItem(
       firstName,
@@ -47,10 +52,12 @@ test.describe("form fill API", () => {
     helperBase,
   }) => {
     const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
-    const firstName = `Test DELETE ME`;
-    const lastName = `Test DELETE ME${todaysDateAndTime}`;
-    const email = `test${todaysDateAndTime}@test.com`;
-    const password = `Test${todaysDateAndTime}!`;
+    const firstName = formFillTestData.apiDeleteTestUser.firstName;
+    const lastName = `${formFillTestData.apiDeleteTestUser.lastName}${todaysDateAndTime}`;
+    const baseEmail = formFillTestData.apiDeleteTestUser.email;
+    const [prefix, domain] = baseEmail.split("@");
+    const email = `${prefix}+${todaysDateAndTime}@${domain}`;
+    const password = `${formFillTestData.apiDeleteTestUser.password}${todaysDateAndTime}!`;
 
     const createItemResponse = await apiHelper.createFormFillItem(
       firstName,
@@ -102,10 +109,10 @@ test.describe("cat shelter API", () => {
     helperBase,
   }) => {
     const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
-    const catDescription = `Test Description 123!`;
+    const catDescription = catShelterTestData.testAPINewCat.catDescription;
     const isFoundHome = false;
-    const inOrOutside = "outside";
-    const catName = `API Automation Cat Added ${todaysDateAndTime}`;
+    const inOrOutside = catShelterTestData.testAPINewCat.radioValue.inside;
+    const catName = `${catShelterTestData.testAPINewCat.catName} ${todaysDateAndTime}`;
 
     const createCatResponse = await apiHelper.createCat(
       catDescription,
@@ -128,10 +135,10 @@ test.describe("cat shelter API", () => {
     helperBase,
   }) => {
     const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
-    const catDescription = `Test Description 123!`;
+    const catDescription = catShelterTestData.testAPIDeleteCat.catDescription;
     const isFoundHome = false;
-    const inOrOutside = "outside";
-    const catName = `Automation Cat DELETE ME ${todaysDateAndTime}`;
+    const inOrOutside = catShelterTestData.testAPIDeleteCat.radioValue.inside;
+    const catName = `${catShelterTestData.testAPIDeleteCat.catName} ${todaysDateAndTime}`;
 
     const createCatResponse = await apiHelper.createCat(
       catDescription,
@@ -167,10 +174,10 @@ test.describe("cat shelter API", () => {
     helperBase,
   }) => {
     const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
-    const catDescription = `Test Description 123!`;
+    const catDescription = catShelterTestData.testAPIEditCat.catDescription;
     const isFoundHome = false;
-    const inOrOutside = "outside";
-    const catName = `API Automation Cat ${todaysDateAndTime}`;
+    const inOrOutside = catShelterTestData.testAPIEditCat.radioValue.inside;
+    const catName = `${catShelterTestData.testAPIEditCat.catName} ${todaysDateAndTime}`;
 
     const createCatResponse = await apiHelper.createCat(
       catDescription,
@@ -190,10 +197,12 @@ test.describe("cat shelter API", () => {
     const createData = await createCatResponse.json();
     const catId = createData.id;
 
-    const catDescriptionUpdate = `Test Updated Description 123!`;
+    const catDescriptionUpdate =
+      catShelterTestData.testAPIEditCat.updatedCatDescription;
     const isFoundHomeUpdate = true;
-    const inOrOutsideUpdate = "inside";
-    const catNameUpdate = `API Automation Cat Updated ${todaysDateAndTime}`;
+    const inOrOutsideUpdate =
+      catShelterTestData.testAPIEditCat.radioValue.outside;
+    const catNameUpdate = `${catShelterTestData.testAPIEditCat.updatedCatName} ${todaysDateAndTime}`;
 
     const updateCatResponse = await apiHelper.updateCat(
       catDescriptionUpdate,
@@ -229,7 +238,7 @@ test.describe("sorted list  API", () => {
     helperBase,
   }) => {
     const todaysDate = helperBase.getTodaysDateWithCurrentTime();
-    const itemTitle = `API ${todaysDate}`;
+    const itemTitle = `${sortedListTestData.apiItem} ${todaysDate}`;
     const addItemResponse = await apiHelper.createSortedListItem(itemTitle);
 
     expect(addItemResponse.ok()).toBeTruthy();
@@ -247,7 +256,7 @@ test.describe("sorted list  API", () => {
     helperBase,
   }) => {
     const todaysDate = helperBase.getTodaysDateWithCurrentTime();
-    const itemTitle = `API DELETE ME ${todaysDate}`;
+    const itemTitle = `${sortedListTestData.apiItemDelete} ${todaysDate}`;
     const addItemResponse = await apiHelper.createSortedListItem(itemTitle);
 
     expect(addItemResponse.ok()).toBeTruthy();

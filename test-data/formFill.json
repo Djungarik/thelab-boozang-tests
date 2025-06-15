@@ -4,5 +4,17 @@
     "lastName": "Automation Last Name",
     "email": "test@test.com",
     "password": "Test"
+  },
+  "apiTestUser": {
+    "firstName": "API Automation Test First Name",
+    "lastName": "API Automation Last Name",
+    "email": "test@test.com",
+    "password": "Test"
+  },
+  "apiDeleteTestUser": {
+    "firstName": "API Automation DELETE First Name",
+    "lastName": "API Automation DELETE Last Name",
+    "email": "delete@test.com",
+    "password": "Test"
   }
 }

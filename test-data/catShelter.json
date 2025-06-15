@@ -24,5 +24,31 @@
       "outside": "Wants to go outside",
       "inside": "Stay inside"
     }
+  },
+  "testAPINewCat": {
+    "catName": "Automation API Cat Added",
+    "catDescription": "Automation API Description 123!",
+    "radioValue": {
+      "outside": "Wants to go outside",
+      "inside": "Stay inside"
+    }
+  },
+  "testAPIEditCat": {
+    "catName": "Automation  API Cat Edit Me",
+    "catDescription": "Automation API Edit Me Description 123!",
+    "radioValue": {
+      "outside": "Wants to go outside",
+      "inside": "Stay inside"
+    },
+    "updatedCatName": "API Updated ",
+    "updatedCatDescription": "API Updated Description 123!"
+  },
+  "testAPIDeleteCat": {
+    "catName": "DELETE Automation API Cat",
+    "catDescription": "DELETE API Test Description 123!",
+    "radioValue": {
+      "outside": "Wants to go outside",
+      "inside": "Stay inside"
+    }
   }
 }
