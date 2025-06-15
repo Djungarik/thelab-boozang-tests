@@ -1,5 +1,8 @@
 import { test, expect } from "../fixtures";
 import { PageManager } from "../page-objects/pageManager";
+import * as sortedListTestData from "../test-data/sortedList.json";
+import * as formFillTestData from "../test-data/formFill.json";
+import * as catShelterTestData from "../test-data/catShelter.json";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -99,7 +102,7 @@ test("sorted list", async ({ page }) => {
 
   const itemsList = page.locator(".collection");
   let item = itemsList.locator(".collection_item");
-  const dataArray = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
+  const dataArray = sortedListTestData.fiveItemsList;
   const addToDoButton = page.getByRole("button", { name: "Add todo" });
 
   await page.waitForSelector(".collection", { state: "visible" });
@@ -133,10 +136,12 @@ test("form fill", async ({ page, helperBase }) => {
   await pm.navigateTo().formFillPage();
 
   const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
-  const firstName = `Test First Name`;
-  const lastName = `Test Last Name${todaysDateAndTime}`;
-  const email = `test${todaysDateAndTime}@test.com`;
-  const password = `Test${todaysDateAndTime}!`;
+  const firstName = formFillTestData.testUser.firstName;
+  const lastName = `${formFillTestData.testUser.lastName}${todaysDateAndTime}`;
+  const baseEmail = formFillTestData.testUser.email;
+  const [prefix, domain] = baseEmail.split("@");
+  const email = `${prefix}+${todaysDateAndTime}@${domain}`;
+  const password = `${formFillTestData.testUser.password}${todaysDateAndTime}!`;
 
   await pm
     .onFormFillPage()
@@ -165,8 +170,8 @@ test.describe("cat shelter", () => {
   });
   test("add a cat to the shelter", async ({ page, helperBase }) => {
     const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
-    const catName = `Automation Cat Added ${todaysDateAndTime}`;
-    const catDescription = `Test Description 123!`;
+    const catName = `${catShelterTestData.testNewCat.catName}${todaysDateAndTime}`;
+    const catDescription = catShelterTestData.testNewCat.catDescription;
 
     await pm.onCatShelterPage().clickAddCatButtonOnTheShelterPage();
 
@@ -175,7 +180,7 @@ test.describe("cat shelter", () => {
       .addCatWithNameDescriptionRadioValue(
         catName,
         catDescription,
-        "Wants to go outside"
+        catShelterTestData.testNewCat.radioValue.outside
       );
 
     await expect(
@@ -184,8 +189,8 @@ test.describe("cat shelter", () => {
   });
   test("edit a cat", async ({ page, helperBase }) => {
     const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
-    const catName = `Automation Cat Edit Me ${todaysDateAndTime}`;
-    const catDescription = `Test Description 123!`;
+    const catName = `${catShelterTestData.testEditCat.catName}${todaysDateAndTime}`;
+    const catDescription = catShelterTestData.testEditCat.catDescription;
 
     await pm.onCatShelterPage().clickAddCatButtonOnTheShelterPage();
 
@@ -194,13 +199,13 @@ test.describe("cat shelter", () => {
       .addCatWithNameDescriptionRadioValue(
         catName,
         catDescription,
-        "Wants to go outside"
+        catShelterTestData.testEditCat.radioValue.inside
       );
 
     await page.locator(".collection li", { hasText: catName }).click();
 
-    const updatedCatName = `Edited ${catName}`;
-    const updatedCatDescription = `Edited ${catDescription}`;
+    const updatedCatName = `${catShelterTestData.testEditCat.updatedCatName} ${catName}`;
+    const updatedCatDescription = `${catShelterTestData.testEditCat.updatedCatDescription} ${catDescription}`;
 
     await pm
       .onCatShelterPage()
@@ -236,8 +241,8 @@ test.describe("cat shelter", () => {
   test("delete a cat", async ({ page, helperBase }) => {
     const todaysDateAndTime = helperBase.getTodaysDateWithCurrentTime();
 
-    const catName = `DELETE Automation Cat ${todaysDateAndTime}`;
-    const catDescription = `Test Description 123!`;
+    const catName = `${catShelterTestData.testDeleteCat.catName} ${todaysDateAndTime}`;
+    const catDescription = `${catShelterTestData.testDeleteCat.catDescription}`;
 
     await pm.onCatShelterPage().clickAddCatButtonOnTheShelterPage();
 
@@ -246,7 +251,7 @@ test.describe("cat shelter", () => {
       .addCatWithNameDescriptionRadioValue(
         catName,
         catDescription,
-        "Wants to go outside"
+        catShelterTestData.testDeleteCat.radioValue.outside
       );
 
     await page.locator(".collection li", { hasText: catName }).click();

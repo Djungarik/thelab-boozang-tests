@@ -1,0 +1,28 @@
+{
+  "testNewCat": {
+    "catName": "Automation Cat Added",
+    "catDescription": "Automation Description 123!",
+    "radioValue": {
+      "outside": "Wants to go outside",
+      "inside": "Stay inside"
+    }
+  },
+  "testEditCat": {
+    "catName": "Automation Cat Edit Me",
+    "catDescription": "Automation Edit Me Description 123!",
+    "radioValue": {
+      "outside": "Wants to go outside",
+      "inside": "Stay inside"
+    },
+    "updatedCatName": "Updated",
+    "updatedCatDescription": "Updated"
+  },
+  "testDeleteCat": {
+    "catName": "DELETE Automation Cat",
+    "catDescription": "DELETE Test Description 123!",
+    "radioValue": {
+      "outside": "Wants to go outside",
+      "inside": "Stay inside"
+    }
+  }
+}
