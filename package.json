@@ -11,8 +11,9 @@
   "license": "ISC",
   "devDependencies": {
     "@applitools/eyes-playwright": "^1.37.2",
-    "@playwright/test": "^1.52.0",
-    "@types/node": "^22.15.18"
+    "@playwright/test": "^1.54.2",
+    "@types/node": "^22.15.18",
+    "allure-playwright": "^3.3.2"
   },
   "dependencies": {
     "jimp": "^1.6.0"
