@@ -42,7 +42,7 @@ Automated Playwright tests for [thelab.boozang.com](https://thelab.boozang.com/)
 
 ## Reporting
 
-- Allure Report can be viewed on the GitHub page
+- Allure Report can be viewed on the [GitHub page](https://djungarik.github.io/thelab-boozang-tests/)
 
 ## Continuous Integration
 
