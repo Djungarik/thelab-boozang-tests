@@ -11,8 +11,6 @@ Automated Playwright tests for [thelab.boozang.com](https://thelab.boozang.com/)
 - `fixtures.ts` - Custom Playwright fixtures
 - `playwright.config.ts` - Playwright configuration
 - `.github/workflows/` - GitHub Actions CI setup
-- `allure-results/` - Allure test results (generated)
-- `playwright-report/` - Playwright HTML reports (generated)
 
 ## Setup
 
